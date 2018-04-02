@@ -5,10 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 db_connection_string = "mysql://{0}:{1}@{2}/{3}".format(
-    settings.DATABASE_USER,
-    settings.DATABASE_PASSWORD,
-    settings.DATABASE_HOST,
-    settings.DATABASE_NAME
+    settings.DB_USER,
+    settings.DB_PASSWORD,
+    settings.DB_HOST,
+    settings.DB_NAME
 )
 
 engine = create_engine(db_connection_string, echo=True, convert_unicode=False)

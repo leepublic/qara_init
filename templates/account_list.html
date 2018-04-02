@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account List</title>
+</head>
+<body>
+<h1>Account List</h1>
+<h2>
+    Login Account :
+    {% if session.logged_in %}
+        {{ session.username }}
+        &nbsp;<a href="/logout/">[Logout]</a>
+    {%else%}
+        Not login
+    &nbsp;<a href="/login/">[Login]</a>
+    {%endif%}
+</h2>
+<ul>
+    {% for row in rows %}
+        <li>{{ row.username }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>

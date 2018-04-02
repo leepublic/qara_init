@@ -1,10 +1,13 @@
+import os
 import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+print "env : "+str(os.environ.get('DB_NAME'))
 
-db_connection_string = "mysql://{0}:{1}@{2}/{3}".format(
+
+db_connection_string = "mysql+pymysql://{0}:{1}@{2}/{3}".format(
     settings.DB_USER,
     settings.DB_PASSWORD,
     settings.DB_HOST,

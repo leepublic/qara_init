@@ -26,11 +26,11 @@ class RedisSession(CallbackDict, SessionMixin):
 
 
 class RedisSessionInterface(SessionInterface):
-    seiralizer = pickle
+    serializer = pickle
     session_class = RedisSession
 
     def __init__(self, prefix='sessiion:'):
-        self.store = redis.StrictRedis()
+        self.store = redis.StrictRedis(host='127.0.0.1', port=6379, db=0)
         self.prefix = prefix
 
     def get_redis_expiration_time(self, app, session):
@@ -45,7 +45,7 @@ class RedisSessionInterface(SessionInterface):
             return self.session_class(sid=sid, new=True)
         val = self.store.get(self.prefix + sid)
         if val is not None:
-            data =  self.serializer.load(val)
+            data =  self.serializer.loads(val)
             return self.session_class(data, sid=sid)
         return self.session_class(sid=sid, new=True)
 
@@ -61,7 +61,9 @@ class RedisSessionInterface(SessionInterface):
         redis_exp = self.get_redis_expiration_time(app, session)
 
         val = self.serializer.dumps(dict(session))
-        self.store.setex(self.prefix + session.sid, val, int(redis_exp.total_seconds()))
+        #self.store.setex(self.prefix + session.sid, val, int(redis_exp.total_seconds()))
+        self.store.set(self.prefix + session.sid, val)
+        self.store.expire(self.prefix + session.sid, int(redis_exp.total_seconds()))
 
         httponly = self.get_cookie_httponly(app)
         secure = self.get_cookie_secure(app)

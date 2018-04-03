@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlalchemy import Column, String, Integer, Boolean, ForeignKey, DateTime, BLOB
 from sqlalchemy.orm import relationship, backref
 
@@ -14,6 +15,10 @@ class User(Base):
     is_active = Column(Boolean, default=False)
     created_at = Column(DateTime)
 
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+        self.created_at = datetime.now()
 
 class FlaskSession(Base):
     __tablename__ = 'flask_session'

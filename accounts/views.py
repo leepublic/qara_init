@@ -29,6 +29,7 @@ class AccountAddView(MethodView):
             conn.commit()
             return redirect(url_for('Accounts.accounts'))
 
+
 class AccountLoginView(MethodView):
 
     def get(self):

@@ -22,7 +22,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
         <script>
             $(function() {
-                var socket = io();
+                var socket = io('http://52.78.71.240:5002');
 
                 socket.emit("login", {
                     name: makeRandomName(),
@@ -34,7 +34,7 @@
                 });
 
                 socket.on("chat", function(data) {
-                    $("#chatLogs").append("<div>" + data.msg + ": from <strong>" + data.from.name + "</strong></div>");
+                    $("#chatLogs").append("<div><strong>" + data.from.name + " : </strong>"+data.msg+"</div>");
                 });
 
                 $("form").submit(function(e) {
@@ -48,7 +48,7 @@
                 function makeRandomName() {
                     var name = "";
                     var possible = "abcdefghijklmnopqrstuvwxyz";
-                    for ( var i = 0; I<3; i++) {
+                    for ( var i = 0; i<3; i++) {
                         name += possible.charAt(Math.floor(Math.random() * possible.length));
                     }
                     return name;

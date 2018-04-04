@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Websocket test</title>
+		<script>
+			var log = function(s) {
+				console.log(s);
+				if (document.readyState !== "complete") {
+					log.buffer.push(s);
+				}else{
+					document.getElementById("output").innerHTML +=(s + '\n')
+				}
+			}
+			log.buffer = [];
+
+			url = "ws://52.78.71.240:5003";
+			w = new WebSocket(url);
+
+			w.onopen = function() {
+				log("open");
+				w.send("thank you for accepting this Web Socket request");
+			}
+
+			w.onmessage = function(e) {
+				console.log(e.data);
+				log(e.data);
+			}
+
+			w.onclose = function(e) {
+				log("closed");
+			}
+
+			window.onload = function() {
+				log(log.buffer.join("\n"));
+				// document.getElementById("sendButton").onclick = function() {
+				// 	console.log(document.getElementById("inputMessage").value);
+				// 	w.send(document.getElementById("inputMessage").value);
+				// }
+			}
+		</script>
+	</head>
+	<body>
+<h3>
+    Login Account :
+    {% if session.logged_in %}
+        {{ session.username }}
+        &nbsp;<a href="/logout/">[Logout]</a>
+    {%else%}
+        Not login
+    &nbsp;<a href="/login/">[Login]</a>
+    {%endif%}
+</h3>
+		<pre id="output"></pre>
+	</body>
+</html>

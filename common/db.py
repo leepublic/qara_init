@@ -11,7 +11,7 @@ db_connection_string = "mysql+pymysql://{0}:{1}@{2}/{3}".format(
     settings.DB_NAME
 )
 
-engine = create_engine(db_connection_string, echo=True, convert_unicode=False)
+engine = create_engine(db_connection_string, echo=False, convert_unicode=False)
 db_session = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
 
 Base = declarative_base()

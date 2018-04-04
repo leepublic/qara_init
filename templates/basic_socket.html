@@ -3,22 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Basic Websocket</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>    
 </head>
 <body>
+    socket ping pong
     <script>
-        var ws = new WebSocket("ws://localhost:3000");
+        $(function() {
+            var socket = io('http://52.78.71.240:5002');
 
-        ws.onopen = function(event) {
-            ws.send("Client message: Hi!");
-        }
+            socket.emit("login", {
+                name: makeRandomName(),
+                userid: "kevin@qarasoft.com"
+            });
 
-        ws.onmessage = function(event) {
-            console.log("Server message : ", event.data);
-        }
+            socket.on("ping", function(data) {
+                console.log("From server : "+data.msg);
+            });
 
-        ws.onerror = function(event) {
-            console.log("Server error message : ", event.data);
-        }
+            function makeRandomName() {
+                var name = "";
+                var possible = "abcdefghijklmnopqrstuvwxyz";
+                for ( var i = 0; i<3; i++) {
+                    name += possible.charAt(Math.floor(Math.random() * possible.length));
+                }
+                return name;
+            }
+
+        });
     </script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 import redis
 import pickle
-import settings
 
 from datetime import timedelta
 from flask.sessions import SessionInterface, SessionMixin
@@ -39,7 +38,7 @@ class RedisSessionInterface(SessionInterface):
         return timedelta(days=1)
 
     def open_session(self, app, request):
-        sid = request.cookies.get(settings.SESSION_COOKIE_NAME)
+        sid = request.cookies.get(app.config['SESSION_COOKIE_NAME'])
         if not sid:
             sid = generate_sid()
             return self.session_class(sid=sid, new=True)
@@ -55,7 +54,7 @@ class RedisSessionInterface(SessionInterface):
         if not session:
             self.store.delete(self.prefix + session.sid)
             if session.modified:
-                response.delete_cookie(settings.SESSION_COOKIE_NAME, domain=domain)
+                response.delete_cookie(app.config['SESSION_COOKIE_NAME'], domain=domain)
             return
 
         redis_exp = self.get_redis_expiration_time(app, session)
@@ -70,7 +69,7 @@ class RedisSessionInterface(SessionInterface):
         expires = self.get_expiration_time(app, session)
 
         response.set_cookie(
-            settings.SESSION_COOKIE_NAME,
+            app.config['SESSION_COOKIE_NAME'],
             session.sid,
             expires=expires,
             httponly=httponly,
